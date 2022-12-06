@@ -1,6 +1,7 @@
 import Brick from '../components/Brick';
 import Container from '../components/Container';
 import MasonryContainer from '../components/MasonryContainer';
+import Navbar from '../components/Navbar';
 
 const imageSrc = '/art'
 const posts = [
@@ -63,12 +64,15 @@ const posts = [
 
 export default function Home() {
   return (
-    <Container>
-      <MasonryContainer>
-        <>
-          { posts. map((post, i) => <Brick title={post.title} image={post.image} key={i} /> ) }
-        </>
-      </MasonryContainer>
-    </Container>
+    <>
+      <Navbar />
+      <Container>
+        <MasonryContainer>
+          <>
+            { posts. map((post, i) => <Brick title={post.title} image={post.image} key={i} /> ) }
+          </>
+        </MasonryContainer>
+      </Container>
+    </>
   )
 }
