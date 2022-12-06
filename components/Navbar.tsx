@@ -9,13 +9,13 @@ const Navbar = () => {
       <div className="flex justify-center">
         <ul className="flex pb-5 w-64 pt-2 justify-between">
           <li className="mr-6">
-            <Link className="font-semibold hover:text-gray-900 underline" href="#">Active</Link>
+            <Link className="font-semibold hover:text-gray-900 underline" href="/">Art</Link>
           </li>
           <li className="mr-6">
-            <Link className="text-gray-500 font-semibold hover:text-gray-900" href="#">Link</Link>
+            <Link className="text-gray-500 font-semibold hover:text-gray-900" href="/about">About</Link>
           </li>
           <li >
-            <Link className="text-gray-500 font-semibold hover:text-gray-900" href="#">Link</Link>
+            <Link className="text-gray-500 font-semibold hover:text-gray-900" href="/contact">Contact</Link>
           </li>
         </ul>
       </div>
