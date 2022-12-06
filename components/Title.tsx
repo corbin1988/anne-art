@@ -1,6 +1,6 @@
 interface TitleProps {
-  children: String;
-  className?: String;
+  children: string | number;
+  className?: string;
 }
 export const H1 = (props: TitleProps) => {
   return <h1 className={`${props.className} font-medium leading-tight text-5xl mt-0 mb-2`}>{props.children}</h1>
