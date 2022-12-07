@@ -1,0 +1,16 @@
+version: '3'
+networks:
+  anne-art:
+    name: anne-art
+services:
+  next:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: next
+    volumes:
+      - ./:/frontend
+    ports:
+      - 3000:3000
+    networks:
+      - anne-art
