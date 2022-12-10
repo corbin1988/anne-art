@@ -7,7 +7,7 @@ interface AdminContainerProps {
 const AdminContainer = (props: AdminContainerProps) => {
   return (
     <div >
-    <div className="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased  bg-gray-100 text-black dark:text-white">
+    <div className="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased  bg-gray-100 text-black">
     
       {/**<!-- Sidebar --> **/}
       <div className="fixed flex flex-col w-14 hover:w-64 md:w-64  bg-white h-full text-gray-800 transition-all duration-300 border-none z-10 sidebar">
