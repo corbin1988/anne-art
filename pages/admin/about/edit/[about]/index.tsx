@@ -1,8 +1,7 @@
-import AdminContainer from "../../../../components/AdminContainer";
+
 import { useState } from "react";
-import CreateAboutForm from "../../../../components/forms/CreateAboutForm";
-
-
+import AdminContainer from '../../../../../components/AdminContainer'
+import CreateAboutForm from "../../../../../components/forms/CreateAboutForm";
 
 const EditAbout = ( ) => {
   const [content, setContent] = useState({})

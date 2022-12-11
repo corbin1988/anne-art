@@ -1,4 +1,4 @@
-import AdminContainer from "../../../../components/AdminContainer";
+import AdminContainer from "../../../../../components/AdminContainer";
 
 const CreatePainting = () => {
   return (
