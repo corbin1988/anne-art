@@ -1,5 +1,5 @@
 interface ButtonProps {
-  children: string;
+  children: string | JSX.Element;
   className?: string;
 }
 

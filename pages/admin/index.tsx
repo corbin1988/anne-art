@@ -16,7 +16,9 @@ const Admin = () => {
       <>
         <div className="flex w-full justify-between py-2 text-black text-center min-w-full sm:px-6 lg:px-8">
         <H2 className="m-0">Art</H2>
-        <Button>Post Painting</Button>
+        <Button>
+          <Link  href='admin/create'>Post Painting</Link>
+        </Button>
         </div>
         <AdminTable>
           {/* Hydration error conditional that waits for page to render */}
@@ -28,7 +30,7 @@ const Admin = () => {
           }
           <tbody>
             <TR>
-              <TDLink href="/">A painting title</TDLink>
+              <TDLink href="admin/edit/painting-one">A painting title</TDLink>
               <TD>
                 <Button className="mr-2">Update</Button>
                 <Button>Delete</Button>
