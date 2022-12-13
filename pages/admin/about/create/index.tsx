@@ -2,8 +2,6 @@ import AdminContainer from "../../../../components/AdminContainer";
 import { useState } from "react";
 import CreateAboutForm from "../../../../components/forms/CreateAboutForm";
 
-
-
 const CreateAbout = ( ) => {
   const [content, setContent] = useState({})
 
