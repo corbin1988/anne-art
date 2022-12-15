@@ -4,6 +4,7 @@ import AdminContainer from "../../../components/AdminContainer";
 import AdminTable, { TD, TDLink, TH, THEAD, TR } from "../../../components/AdminTable";
 import Button from "../../../components/Button";
 import { H2 } from "../../../components/Title";
+import withProtected from "../../../hooks/router";
 
 const AdminAboutList = () => {
   const [loaded, setLoaded] = useState(false)
@@ -44,4 +45,4 @@ const AdminAboutList = () => {
   )
 }
 
-export default AdminAboutList;
+export default withProtected(AdminAboutList);

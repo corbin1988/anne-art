@@ -1,6 +1,7 @@
 import { useState } from "react";
 import AdminContainer from "../../../components/AdminContainer";
 import PaintingPageForm from "../../../components/forms/PaintingPageForm";
+import withProtected from "../../../hooks/router";
 
 const CreatePainting = () => {
   const [content, setContent] = useState({})
@@ -21,4 +22,4 @@ const CreatePainting = () => {
   )
 }
 
-export default CreatePainting;
+export default withProtected(CreatePainting);
