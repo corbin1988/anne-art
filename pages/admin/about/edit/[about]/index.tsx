@@ -2,6 +2,7 @@
 import { useState } from "react";
 import AdminContainer from '../../../../../components/AdminContainer'
 import CreateAboutForm from "../../../../../components/forms/CreateAboutForm";
+import withProtected from "../../../../../hooks/router";
 
 const EditAbout = ( ) => {
   const [content, setContent] = useState({})
@@ -24,4 +25,4 @@ const EditAbout = ( ) => {
   )
 }
 
-export default EditAbout;
+export default withProtected(EditAbout);
