@@ -3,12 +3,14 @@ import { useEffect, useState } from "react";
 import AdminContainer from "../../components/AdminContainer";
 import AdminTable, { TD, TDLink, TH, THEAD, TR } from "../../components/AdminTable";
 import Button from "../../components/Button";
-import { H2 } from "../../components/Title";
+import { H2, H3, H4 } from "../../components/Title";
 import { withProtected } from "../../hooks/router";
-import { collection, doc, getDocs, query, setDoc } from "firebase/firestore";
-import { db } from '../../firebase';
+import { collection, deleteDoc, doc, getDocs, query, setDoc } from "firebase/firestore";
+import { db, storage } from '../../firebase';
+import { deleteObject, ref } from "firebase/storage";
 
 interface Painting {
+  uid: string;
   title: string;
   year: number | string;
   medium: string;
@@ -28,7 +30,7 @@ const Admin = () => {
      //Create paintings interface
      let allPaintings: Painting[] | any = [];
      allPaintingsGet.forEach((doc) => {
-       allPaintings.push(doc.data());
+       allPaintings.push({uid: doc.id, ...doc.data()});
     });
     setPaintings(allPaintings);
   }
@@ -36,7 +38,24 @@ const Admin = () => {
   useEffect(() => {
     getPainitings();
     setLoaded(true);
-  }, [loaded])
+  }, [loaded]);
+
+  useEffect(() => {
+    
+  }, [paintings])
+  
+
+  const deletePainting = async (painting: Painting) => {
+
+    const paintingImageRef = ref(storage, painting.image);
+
+    const paintingRef = await deleteDoc(doc(db, "paintings", painting.uid)).then(()=>{
+      deleteObject(paintingImageRef).then(()=> {
+        const newPaintings = paintings.filter((oldPainting: Painting) => oldPainting.uid !== painting.uid);
+        setPaintings(newPaintings);
+      });
+    });
+  }
   
   return (
     <AdminContainer>
@@ -56,15 +75,20 @@ const Admin = () => {
             </THEAD> : <></>
           }
           <tbody>
-          { paintings? paintings.map((painting: Painting, i: number) => (
+          { paintings.length > 0? paintings.map((painting: Painting, i: number) => (
             <TR key={i}>
               <TDLink href="admin/edit/painting-one">{painting.title}</TDLink>
               <TD>
                 <Button className="mr-2">Update</Button>
-                <Button>Delete</Button>
+                <Button onClick={() => deletePainting(painting)}>Delete</Button>
               </TD>
             </TR>
-            )) : <H2>Loading...</H2>
+            )) :<TR >
+              <TD>
+                <H4>There are no paintings</H4>
+              </TD>
+              <TD><></></TD>
+            </TR>
           } 
           </tbody>
         </AdminTable>
