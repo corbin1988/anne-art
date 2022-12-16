@@ -7,6 +7,7 @@ import { db, storage } from "../../../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import  Router  from "next/router";
 import { H2 } from "../../../components/Title";
+import toPath from "../../../utils/toPath";
 
 const CreatePainting = () => {
   const [content, setContent] = useState({})
@@ -30,6 +31,7 @@ const CreatePainting = () => {
             height: content.height,
             width: content.width,
             image: downloadURL,
+            path: toPath(content.title)
           });
           console.log("Document written with ID: ", docRef.id);
           return Router.push('/admin/');

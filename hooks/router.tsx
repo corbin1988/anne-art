@@ -1,8 +1,8 @@
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from '../firebase';
 import Router from 'next/router'
-import { ReactNode, useEffect, useState } from 'react';
-import { doc, Firestore, getDoc } from "firebase/firestore";
+import { useEffect, useState } from 'react';
+import { doc, getDoc } from "firebase/firestore";
 import LoadingContainer from '../components/LoadingContainer';
 
 export const withProtected = (Component: any) => {

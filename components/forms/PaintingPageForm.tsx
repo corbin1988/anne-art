@@ -13,6 +13,7 @@ interface PaintingPageFormProps {
   height?: number;
   width?: number;
   image?: string;
+  selectedImage?: string;
 }
 
 const fileTypes = ["JPG", "PNG", "GIF"];
@@ -24,7 +25,7 @@ const PaintingPageForm = (props: PaintingPageFormProps) => {
   const [height, setHeight] = useState(props.height? props.height : '');
   const [width, setWidth] = useState(props.width? props.width : '');
   const [image, setImage] = useState(props.image? props.image : null)
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(props.selectedImage? props.selectedImage : null);
 
   const imageChange = (e: any) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -66,7 +67,8 @@ const PaintingPageForm = (props: PaintingPageFormProps) => {
           {selectedImage && image === null && (
             <div>
               <img
-                src={URL.createObjectURL(selectedImage)}
+              /* @ts-ignore */
+                src={props.selectedImage? props.selectedImage : URL.createObjectURL(selectedImage)}
                 alt="Thumb"
               />
               <button onClick={removeSelectedImage}>
