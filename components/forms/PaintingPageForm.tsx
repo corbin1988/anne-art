@@ -13,6 +13,7 @@ interface PaintingPageFormProps {
   height?: number;
   width?: number;
   image?: string;
+  selectedImage?: string;
 }
 
 const fileTypes = ["JPG", "PNG", "GIF"];
@@ -24,7 +25,7 @@ const PaintingPageForm = (props: PaintingPageFormProps) => {
   const [height, setHeight] = useState(props.height? props.height : '');
   const [width, setWidth] = useState(props.width? props.width : '');
   const [image, setImage] = useState(props.image? props.image : null)
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(props.selectedImage? props.selectedImage : null);
 
   const imageChange = (e: any) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -32,6 +33,14 @@ const PaintingPageForm = (props: PaintingPageFormProps) => {
       setImage(null);
     }
   };
+  let painting = {
+    title,
+    year: date,
+    medium,
+    height,
+    width,
+    image: selectedImage,
+  }
 
   const removeSelectedImage = () => {
     setSelectedImage(null);
@@ -39,9 +48,14 @@ const PaintingPageForm = (props: PaintingPageFormProps) => {
 
   return (
     <div className='px-8 text-gray-900'>
-      <form onSubmit={(e) => props.submit(e, {title: title})}>
+      <form onSubmit={(e) => props.submit(e, painting)}>
         <div className="mb-4">
-          <Input onChange={(e) => setTitle(e.target.value)} type="text" placeholder="Title of the painting" label="title" value={props.title}/>
+          <Input 
+            onChange={(e) => setTitle(e.target.value)} 
+            type="text" placeholder="Title of the painting" 
+            label="title" 
+            value={title}
+          />
         </div>
         <div>
           <input
@@ -53,7 +67,8 @@ const PaintingPageForm = (props: PaintingPageFormProps) => {
           {selectedImage && image === null && (
             <div>
               <img
-                src={URL.createObjectURL(selectedImage)}
+              /* @ts-ignore */
+                src={props.selectedImage? props.selectedImage : URL.createObjectURL(selectedImage)}
                 alt="Thumb"
               />
               <button onClick={removeSelectedImage}>
@@ -75,17 +90,41 @@ const PaintingPageForm = (props: PaintingPageFormProps) => {
           )}
         </div>
         <div className="mb-4">
-          <Input onChange={(e) => setTitle(e.target.value)} type="text" placeholder="What year? (1995, etc)" label="Year" value={props.date}/>
+          <Input 
+            onChange={(e) => setDate(e.target.value)} 
+            type="text" 
+            placeholder="What year? (1995, etc)" 
+            label="Year" 
+            value={date}
+          />
         </div>
         <div className="mb-4">
-          <Input onChange={(e) => setTitle(e.target.value)} type="text" placeholder="What did you use to make this painting? (canvas, paper, etc)" label="Medium" value={props.medium}/>
+          <Input 
+            onChange={(e) => setMedium(e.target.value)} 
+            type="text" 
+            placeholder="What did you use to make this painting? (canvas, paper, etc)" 
+            label="Medium" 
+            value={medium}
+          />
         </div>
         <div className="flex">
           <div className="w-2/4 pr-2">
-            <Input onChange={(e) => setTitle(e.target.value)} type="text" placeholder="Width of painting in cm" label="Width" value={props.width}/>
+            <Input 
+              onChange={(e) => setWidth(e.target.value)} 
+              type="text" 
+              placeholder="Width of painting in cm" 
+              label="Width" 
+              value={width}
+            />
           </div>
           <div className="w-2/4 pl-2">
-            <Input onChange={(e) => setTitle(e.target.value)} type="text" placeholder="Height of painting in cm" label="Height" value={props.height}/>
+            <Input 
+              onChange={(e) => setHeight(e.target.value)} 
+              type="text" 
+              placeholder="Height of painting in cm" 
+              label="Height" 
+              value={height}
+            />
           </div>
         </div>
         <div className='w-full mt-4 flex justify-end'>
