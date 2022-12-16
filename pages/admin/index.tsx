@@ -4,11 +4,37 @@ import AdminContainer from "../../components/AdminContainer";
 import AdminTable, { TD, TDLink, TH, THEAD, TR } from "../../components/AdminTable";
 import Button from "../../components/Button";
 import { H2 } from "../../components/Title";
-import withProtection, { withProtected } from "../../hooks/router";
+import { withProtected } from "../../hooks/router";
+import { collection, doc, getDocs, query, setDoc } from "firebase/firestore";
+import { db } from '../../firebase';
+
+interface Painting {
+  title: string;
+  year: number | string;
+  medium: string;
+  height: string | number;
+  width: string | number;
+  image: string;
+}
 
 const Admin = () => {
   const [loaded, setLoaded] = useState(false)
+  const [paintings, setPaintings] = useState([]);
+
+  const getPainitings = async () => {
+    const paintingsRef = collection(db, "paintings");
+    const allPintingsQuery = query(paintingsRef);
+     const allPaintingsGet = await getDocs(allPintingsQuery);
+     //Create paintings interface
+     let allPaintings: Painting[] | any = [];
+     allPaintingsGet.forEach((doc) => {
+       allPaintings.push(doc.data());
+    });
+    setPaintings(allPaintings);
+  }
+
   useEffect(() => {
+    getPainitings();
     setLoaded(true);
   }, [loaded])
   
@@ -30,13 +56,16 @@ const Admin = () => {
             </THEAD> : <></>
           }
           <tbody>
-            <TR>
-              <TDLink href="admin/edit/painting-one">A painting title</TDLink>
+          { paintings? paintings.map((painting: Painting, i: number) => (
+            <TR key={i}>
+              <TDLink href="admin/edit/painting-one">{painting.title}</TDLink>
               <TD>
                 <Button className="mr-2">Update</Button>
                 <Button>Delete</Button>
               </TD>
             </TR>
+            )) : <H2>Loading...</H2>
+          } 
           </tbody>
         </AdminTable>
       </>
