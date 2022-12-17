@@ -8,13 +8,13 @@ interface CreateAboutFormProps {
   submit: (e: any, content: any) => any;
   content: any;
   html?: string;
-  title?: string;
+  year?: string;
 }
 
 const CreateAboutForm = (props: CreateAboutFormProps) => {
 
   const [html, setHtml] = useState(props.html? props.html : 'my <b>HTML</b>');
-  const [title, setTitle] = useState(props.title? props.title : 'my <b>HTML</b>');
+  const [year, setYear] = useState(props.year? props.year : '');
 
   const onChangeHTML = (e: any) => {
     setHtml(e.target.value);
@@ -23,9 +23,15 @@ const CreateAboutForm = (props: CreateAboutFormProps) => {
 
   return (
     <div className='px-8'>
-      <form onSubmit={(e) => props.submit(e, {title: title, ccontent: html})}>
+      <form onSubmit={(e) => props.submit(e, {year: year, content: html})}>
         <div className="mb-4">
-          <Input onChange={(e) => setTitle(e.target.value)} type="text" placeholder="What year? (1995, etc)" label="Year" value={props.title}/>
+          <Input 
+            onChange={(e) => setYear(e.target.value)} 
+            type="text" 
+            placeholder="What year? (1995, etc)" 
+            label="Year" 
+            value={year}
+          />
         </div>
         <div className="mb-4">
           <H5>What Happened this year?</H5>

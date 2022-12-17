@@ -12,10 +12,10 @@ import Router from "next/router";
 export async function getServerSideProps(context: any) {
   console.log(context.params.piece)
 
-  const citiesRef = collection(db, "paintings");
+  const paintingsRef = collection(db, "paintings");
 
 // Create a query against the collection.
-  const q = query(citiesRef, where("path", "==", context.params.piece));
+  const q = query(paintingsRef, where("path", "==", context.params.piece));
 
   let painting;
   const querySnapshot = await getDocs(q);
@@ -49,7 +49,6 @@ const EditPainting = (props: any) => {
     setLoading(true)
     const paintingRef = doc(db, "paintings", props.painting.uid);
 
-    // Set the "capital" field of the city 'DC'
     await updateDoc(paintingRef, {
       ...content,
       path: toPath(content.title)
