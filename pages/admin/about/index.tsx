@@ -51,7 +51,7 @@ const AdminAboutList = () => {
             </THEAD> : <></>
           }
           <tbody>
-          {about.length > 0 ? about.map((post: About, i: number) => (
+            {about.length > 0 ? about.map((post: About, i: number) => (
               <TR key={i}>
                 <TDLink href={`/admin/about/edit/${post.path}`}>{post.year}</TDLink>
                 <TD>
