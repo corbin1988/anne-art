@@ -18,7 +18,7 @@ const EditAbout = ( ) => {
       <CreateAboutForm 
         submit={submit}
         content={setContent}
-        title='Hello world'
+        year='Hello world'
         html='wooo'
       />
     </AdminContainer>

@@ -17,7 +17,7 @@ const AdminAboutList = () => {
         <div className="flex w-full justify-between py-2 text-black text-center min-w-full sm:px-6 lg:px-8">
         <H2 className="m-0">About</H2>
         <Button>
-          <Link  href='admin/about/create'>
+          <Link  href='/admin/about/create'>
             Create Year
           </Link>
         </Button>
