@@ -27,7 +27,7 @@ const CreateAbout = ( ) => {
     console.log(error)
     setLoading(false)
    } 
-    return Router.push('/admin/');
+    return Router.push('/admin/about/');
   }
 
   return (
