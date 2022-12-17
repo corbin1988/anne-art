@@ -18,7 +18,7 @@ const CreateAbout = ( ) => {
 
    try {
     await addDoc(collection(db, 'about'), {
-      year: content.year,
+      year: Number(content.year),
       path: toPath(content.year),
       content: content.content
     });

@@ -1,4 +1,4 @@
-import { collection, deleteDoc, doc, getDocs, query } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs, orderBy, query } from "firebase/firestore";
 import { ref } from "firebase/storage";
 import Link from "next/link";
 import Router from "next/router";
@@ -17,7 +17,7 @@ const AdminAboutList = () => {
 
   const getAllAbout= async () => {
     const aboutRef = collection(db, "about");
-    const allAboutQuery = query(aboutRef);
+    const allAboutQuery = query(aboutRef, orderBy('year','desc'));
     const allAboutGet = await getDocs(allAboutQuery);
 
     let allAbout: About[] | any = [];
