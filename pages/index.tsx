@@ -1,86 +1,49 @@
+import { collection, getDocs, query } from 'firebase/firestore';
 import Brick from '../components/Brick';
 import Container from '../components/Container';
 import MasonryContainer from '../components/MasonryContainer';
 import Navbar from '../components/Navbar';
+import { H2 } from '../components/Title';
+import { db } from '../firebase';
+import Painting from '../interfaces/Painting';
 
-const imageSrc = '/art'
-const posts = [
-  {
-    image:`${imageSrc}/piece_1.jpeg`,
-    title: 'Painting One',
-    description: 'PBR&B bitters direct trade XOXO put a bird on it raclette meggings tofu +1 yr raw denim. Butcher shoreditch cloud bread, same sus trust fund chartreuse skateboard portland af.',
-    route: 'painting-one'
-  },
-  {
-    image:`${imageSrc}/piece_2.jpeg`,
-    title: 'Painting Two',
-    description: 'PBR&B bitters direct trade XOXO put a bird on it raclette meggings tofu +1 yr raw denim. Butcher shoreditch cloud bread, same sus trust fund chartreuse skateboard portland af.',
-    route: 'painting-two'
-  },
-  {
-    image:`${imageSrc}/piece_3.jpeg`,
-    title: 'Painting Three',
-    description: 'PBR&B bitters direct trade XOXO put a bird on it raclette meggings tofu +1 yr raw denim. Butcher shoreditch cloud bread, same sus trust fund chartreuse skateboard portland af.',
-    route: 'painting-three'
-  },
-  {
-    image:`${imageSrc}/piece_4.jpeg`,
-    title: 'Painting Four',
-    description: 'PBR&B bitters direct trade XOXO put a bird on it raclette meggings tofu +1 yr raw denim. Butcher shoreditch cloud bread, same sus trust fund chartreuse skateboard portland af.',
-    route: 'painting-four'
-  },
-  {
-    image:`${imageSrc}/piece_5.jpeg`,
-    title: 'Painting Five',
-    description: 'PBR&B bitters direct trade XOXO put a bird on it raclette meggings tofu +1 yr raw denim. Butcher shoreditch cloud bread, same sus trust fund chartreuse skateboard portland af.',
-    route: 'painting-five'
-  },
-  {
-    image:`${imageSrc}/piece_6.jpeg`,
-    title: 'Painting Six',
-    description: 'PBR&B bitters direct trade XOXO put a bird on it raclette meggings tofu +1 yr raw denim. Butcher shoreditch cloud bread, same sus trust fund chartreuse skateboard portland af.',
-    route: 'painting-six'
-  },
-  {
-    image:`${imageSrc}/piece_7.jpeg`,
-    title: 'Painting Seven',
-    description: 'PBR&B bitters direct trade XOXO put a bird on it raclette meggings tofu +1 yr raw denim. Butcher shoreditch cloud bread, same sus trust fund chartreuse skateboard portland af.',
-    route: 'painting-seven'
-  },
-  {
-    image:`${imageSrc}/piece_8.jpeg`,
-    title: 'Painting Eight',
-    description: 'PBR&B bitters direct trade XOXO put a bird on it raclette meggings tofu +1 yr raw denim. Butcher shoreditch cloud bread, same sus trust fund chartreuse skateboard portland af.',
-    route: 'painting-eight'
-  },
-  {
-    image:`${imageSrc}/piece_9.jpeg`,
-    title: 'Painting Nine',
-    description: 'PBR&B bitters direct trade XOXO put a bird on it raclette meggings tofu +1 yr raw denim. Butcher shoreditch cloud bread, same sus trust fund chartreuse skateboard portland af.',
-    route: 'painting-nine'
-  },
-  {
-    image:`${imageSrc}/piece_10.jpeg`,
-    title: 'Painting Ten',
-    description: 'PBR&B bitters direct trade XOXO put a bird on it raclette meggings tofu +1 yr raw denim. Butcher shoreditch cloud bread, same sus trust fund chartreuse skateboard portland af.',
-    route: 'painting-ten'
-  },
-  {
-    image:`${imageSrc}/piece_11.jpeg`,
-    title: 'Painting Eleven',
-    description: 'PBR&B bitters direct trade XOXO put a bird on it raclette meggings tofu +1 yr raw denim. Butcher shoreditch cloud bread, same sus trust fund chartreuse skateboard portland af.',
-    route: 'painting-eleven'
-  },
-];
+interface HomeProps {
+  paintings: Painting[];
+}
 
-export default function Home() {
+export async function getServerSideProps(context: any) {
+    const paintingsRef = collection(db, "paintings");
+    const allPaintingsQuery = query(paintingsRef);
+    const paintingsGet = await getDocs(allPaintingsQuery);
+
+    let paintings: Painting[] | any = [];
+    paintingsGet.forEach((doc) => {
+      paintings.push({ uid: doc.id, ...doc.data() });
+    });
+
+    console.log(paintings)
+    return {
+      props: {
+        paintings
+      }, 
+    }
+}
+
+export default function Home({paintings} : HomeProps) {
   return (
     <>
       <Navbar />
       <Container>
         <MasonryContainer>
           <>
-            { posts. map((post, i) => <Brick title={post.title} image={post.image} route={post.route} key={i} /> ) }
+            {paintings? paintings.map((post, i) =>(
+              <Brick 
+                title={post.title} 
+                image={post.image} 
+                route={post.path} 
+                key={i} 
+              />
+            )) : <H2>There are no paintings. Please add some.</H2>}
           </>
         </MasonryContainer>
       </Container>
