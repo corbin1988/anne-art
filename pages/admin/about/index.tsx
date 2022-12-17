@@ -1,16 +1,36 @@
+import { collection, getDocs, query } from "firebase/firestore";
 import Link from "next/link";
+import Router from "next/router";
 import { useEffect, useState } from "react";
 import AdminContainer from "../../../components/AdminContainer";
 import AdminTable, { TD, TDLink, TH, THEAD, TR } from "../../../components/AdminTable";
 import Button from "../../../components/Button";
-import { H2 } from "../../../components/Title";
+import { H2, H4 } from "../../../components/Title";
+import { db } from "../../../firebase";
 import withProtected from "../../../hooks/router";
+import About from "../../../interfaces/About";
 
 const AdminAboutList = () => {
-  const [loaded, setLoaded] = useState(false)
+  const [loaded, setLoaded] = useState(false);
+  const [about, setAbout] = useState([])
+
+  const getAllAbout= async () => {
+    const aboutRef = collection(db, "about");
+    const allAboutQuery = query(aboutRef);
+    const allAboutGet = await getDocs(allAboutQuery);
+
+    let allAbout: About[] | any = [];
+    allAboutGet.forEach((doc) => {
+      allAbout.push({ uid: doc.id, ...doc.data() });
+    });
+    setAbout(allAbout);
+  };
+  
   useEffect(() => {
+    getAllAbout();
     setLoaded(true);
-  }, [loaded])
+  }, [loaded]);
+
   return (
     <AdminContainer>
       <>
@@ -31,13 +51,20 @@ const AdminAboutList = () => {
             </THEAD> : <></>
           }
           <tbody>
-            <TR>
-              <TDLink href="about/edit/2000">2000</TDLink>
+          {about.length > 0 ? about.map((post: About, i: number) => (
+              <TR key={i}>
+                <TDLink href={`/admin/about/edit/${post.path}`}>{post.year}</TDLink>
+                <TD>
+                  <Button className="mr-2" onClick={() =>  Router.push(`/admin/about/edit/${post.path}`)}>Update</Button>
+                  <Button onClick={() => console.log(post)}>Delete</Button>
+                </TD>
+              </TR>
+            )) : <TR>
               <TD>
-                <Button className="mr-2">Update</Button>
-                <Button>Delete</Button>
+                <H4>There are no about</H4>
               </TD>
-            </TR>
+              <TD><></></TD>
+            </TR>}
           </tbody>
         </AdminTable>
       </>
