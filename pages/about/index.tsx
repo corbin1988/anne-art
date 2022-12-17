@@ -1,30 +1,30 @@
+import { collection, query, getDocs, orderBy } from "firebase/firestore";
 import Container from "../../components/Container";
 import Navbar from "../../components/Navbar";
-import { H3, H4, H5 } from "../../components/Title";
+import { H3, H4 } from "../../components/Title";
+import { db } from "../../firebase";
+import About from "../../interfaces/About";
 
-const about = {
-  description: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>',
-  timeline: [
-    {
-      year: 2000,
-      content: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p><p>Duis aute irure dolor in reprehenderit in voluptate</p><p>Excepteur sint occaecat cupidatat non proident</p>'
-    },
-    {
-      year: 2001,
-      content: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p><p>Duis aute irure dolor in reprehenderit in voluptate</p><p>Excepteur sint occaecat cupidatat non proident</p>'
-    },
-    {
-      year: 2002,
-      content: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p><p>Duis aute irure dolor in reprehenderit in voluptate</p><p>Excepteur sint occaecat cupidatat non proident</p>'
-    },
-    {
-      year: 2003,
-      content: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p><p>Duis aute irure dolor in reprehenderit in voluptate</p><p>Excepteur sint occaecat cupidatat non proident</p>'
-    }
-  ]
-};
+export async function getServerSideProps(context: any) {
+  const aboutsRef = collection(db, "about");
+  const allAboutQuery = query(aboutsRef, orderBy('year', 'desc'));
+  const aboutGet = await getDocs(allAboutQuery);
 
-const About = () => {
+  let about: About[] | any = [];
+  aboutGet.forEach((doc) => {
+    about.push({ uid: doc.id, ...doc.data() });
+  });
+  const description = "A description of Anne"
+  console.log(about)
+  return {
+    props: {
+      about,
+      description
+    }, 
+  }
+}
+
+const About = ({about, description} : any) => {
   return(
    <>
     <Navbar />
@@ -36,7 +36,7 @@ const About = () => {
         </div>
         <div>
           <H3 className="mb-4">Timeline</H3>
-          { about.timeline. map((date, i) => 
+          { about.map((date: About, i: number) => 
             <div className="mb-4" key={i}>
               <H4>{date.year}</H4>
               <div dangerouslySetInnerHTML={{ __html: date.content}}></div>
