@@ -5,7 +5,7 @@ import Link from 'next/link';
 interface ContainerProps {
   image: string;
   title: string;
-  route: string;
+  route: string | any;
 }
 const Brick = (props: ContainerProps) => {
   return (
