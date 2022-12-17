@@ -1,4 +1,5 @@
-import { collection, getDocs, query } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs, query } from "firebase/firestore";
+import { ref } from "firebase/storage";
 import Link from "next/link";
 import Router from "next/router";
 import { useEffect, useState } from "react";
@@ -6,7 +7,7 @@ import AdminContainer from "../../../components/AdminContainer";
 import AdminTable, { TD, TDLink, TH, THEAD, TR } from "../../../components/AdminTable";
 import Button from "../../../components/Button";
 import { H2, H4 } from "../../../components/Title";
-import { db } from "../../../firebase";
+import { db, storage } from "../../../firebase";
 import withProtected from "../../../hooks/router";
 import About from "../../../interfaces/About";
 
@@ -31,6 +32,14 @@ const AdminAboutList = () => {
     setLoaded(true);
   }, [loaded]);
 
+  const deleteAbout = async (aboutPost: About) => {
+
+    await deleteDoc(doc(db, "about", aboutPost.uid)).then(() => {
+      const newAbout = about.filter((oldAbout: About) => oldAbout.uid !== aboutPost.uid);
+      setAbout(newAbout);
+    });
+  }
+
   return (
     <AdminContainer>
       <>
@@ -52,19 +61,20 @@ const AdminAboutList = () => {
           }
           <tbody>
             {about.length > 0 ? about.map((post: About, i: number) => (
-              <TR key={i}>
-                <TDLink href={`/admin/about/edit/${post.path}`}>{post.year}</TDLink>
+                <TR key={i}>
+                  <TDLink href={`/admin/about/edit/${post.path}`}>{post.year}</TDLink>
+                  <TD>
+                    <Button className="mr-2" onClick={() =>  Router.push(`/admin/about/edit/${post.path}`)}>Update</Button>
+                    <Button onClick={() => deleteAbout(post)}>Delete</Button>
+                  </TD>
+                </TR>
+              )) : <TR>
                 <TD>
-                  <Button className="mr-2" onClick={() =>  Router.push(`/admin/about/edit/${post.path}`)}>Update</Button>
-                  <Button onClick={() => console.log(post)}>Delete</Button>
+                  <H4>There are no about posts</H4>
                 </TD>
+                <TD><></></TD>
               </TR>
-            )) : <TR>
-              <TD>
-                <H4>There are no about</H4>
-              </TD>
-              <TD><></></TD>
-            </TR>}
+            }
           </tbody>
         </AdminTable>
       </>
